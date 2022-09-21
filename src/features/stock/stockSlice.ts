@@ -1,0 +1,25 @@
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { Stock } from "../../types";
+
+const initialState: { selectedStock?: Stock } = {
+  selectedStock: undefined,
+};
+
+export const stockSlice = createSlice({
+  name: "stock",
+  initialState,
+  reducers: {
+    selectStock: (state, action: PayloadAction<Stock>) => {
+      state.selectedStock = action.payload;
+    },
+  },
+});
+
+export const { selectStock } = stockSlice.actions;
+
+export const selectCurrentStock = (state: RootState) =>
+  state.stock.selectedStock;
+
+export default stockSlice.reducer;
