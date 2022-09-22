@@ -1,11 +1,11 @@
 import { Paper } from "@mui/material";
 import Button from "@mui/material/Button";
-import { useCallback, useState } from "react";
-import CustomModal from "./CustomModal";
 import Divider from "@mui/material/Divider";
-import StockList from "./StockList";
 import Grid from "@mui/material/Grid";
+import { useCallback, useState } from "react";
 import AddStockForm from "./AddStockForm";
+import CustomModal from "./CustomModal";
+import StockList from "./StockList";
 
 const StocksPanel = () => {
   const [open, setOpen] = useState(false);

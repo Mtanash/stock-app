@@ -1,6 +1,6 @@
 import CircularProgress from "@mui/material/CircularProgress";
-import { useGetAllStocksQuery } from "../features/api/stockApiSlice";
 import Stack from "@mui/material/Stack";
+import { useGetAllStocksQuery } from "../features/api/stockApiSlice";
 import Stock from "./Stock";
 
 const StockList = () => {

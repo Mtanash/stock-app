@@ -18,7 +18,18 @@ export const extendedApi = apiSlice.injectEndpoints({
       },
       providesTags: ["stocks"],
     }),
+    deleteStock: builder.mutation<void, string>({
+      query: (stockId) => ({
+        url: `/stocks/${stockId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["stocks", "items"],
+    }),
   }),
 });
 
-export const { useAddNewStockMutation, useGetAllStocksQuery } = extendedApi;
+export const {
+  useAddNewStockMutation,
+  useGetAllStocksQuery,
+  useDeleteStockMutation,
+} = extendedApi;

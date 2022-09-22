@@ -1,6 +1,9 @@
 export interface Item {
   _id?: string;
-  stock: string;
+  stock: {
+    _id: string;
+    name: string;
+  };
   name: string;
   dates: {
     _id?: string;

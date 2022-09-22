@@ -29,6 +29,7 @@ const ItemDateInput = ({
           value={month}
           onChange={(e) => onMonthChange(+e.target.value)}
           inputProps={{ min: 1, max: 12 }}
+          required
         />
         <TextField
           className="yearInput"
@@ -38,6 +39,7 @@ const ItemDateInput = ({
           value={year}
           onChange={(e) => onYearChange(+e.target.value)}
           inputProps={{ min: 1900, max: 4000 }}
+          required
         />
       </Box>
       <Divider orientation="vertical" />
@@ -49,6 +51,7 @@ const ItemDateInput = ({
         value={quantity}
         onChange={(e) => onQuantityChange(+e.target.value)}
         inputProps={{ min: 1 }}
+        required
       />
     </Box>
   );

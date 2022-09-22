@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import { style } from "./CustomModal.style";
 import { ReactNode } from "react";
+import { style } from "./CustomModal.style";
 
 const CustomModal = ({
   open,

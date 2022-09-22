@@ -1,13 +1,20 @@
 import { Button, Divider, Paper, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { useAppSelector } from "../app/hooks";
-import { selectCurrentStock } from "../features/stock/stockSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useDeleteStockMutation } from "../features/api/stockApiSlice";
+import {
+  selectCurrentStock,
+  unselectStock,
+} from "../features/stock/stockSlice";
+import useAlertDialog from "../hooks/useAlertDialog";
+import useCustomModal from "../hooks/useCustomModal";
+import AddItemForm from "./AddItemForm";
+import AlertDialog from "./AlertDialog";
 import CustomModal from "./CustomModal";
 import ItemList from "./ItemList";
-import AddItemForm from "./AddItemForm";
-import useCustomModal from "../hooks/useCustomModal";
 
 const ItemsPanel = () => {
+  const dispatch = useAppDispatch();
   const currentStock = useAppSelector(selectCurrentStock);
 
   const {
@@ -16,8 +23,25 @@ const ItemsPanel = () => {
     handleCustomModalOpen: handleAddItemModalOpen,
   } = useCustomModal();
 
+  const { alertDialogOpen, handleAlertDialogClose, handleAlertDialogOpen } =
+    useAlertDialog();
+
+  const [deleteStock, { isLoading: deleteStockLoading }] =
+    useDeleteStockMutation();
+
   const handleAddNewItemClick = () => {
     handleAddItemModalOpen();
+  };
+
+  const handleDeleteItemClick = () => {
+    handleAlertDialogOpen();
+  };
+
+  const handleDeleteStock = async () => {
+    if (!currentStock) return;
+    await deleteStock(currentStock._id);
+    dispatch(unselectStock());
+    handleAlertDialogClose();
   };
 
   return (
@@ -29,17 +53,36 @@ const ItemsPanel = () => {
         elevation={3}
       >
         <Typography variant="h4">
-          {currentStock
-            ? `Selected stock: ${currentStock.name}`
-            : "Please select a stock"}
+          {currentStock ? currentStock.name : "Please select a stock"}
         </Typography>
-        <Button
-          variant="contained"
-          sx={{ margin: ".5rem 0" }}
-          onClick={handleAddNewItemClick}
-        >
-          Add new item
-        </Button>
+        {currentStock && (
+          <>
+            <Button
+              variant="contained"
+              sx={{ margin: ".5rem" }}
+              onClick={handleAddNewItemClick}
+            >
+              Add new item
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ margin: ".5rem" }}
+              onClick={handleDeleteItemClick}
+            >
+              Delete {currentStock.name}
+            </Button>
+            <AlertDialog
+              open={alertDialogOpen}
+              handleOpen={handleAlertDialogOpen}
+              handleClose={handleAlertDialogClose}
+              action={handleDeleteStock}
+              title="Delete Alert"
+              content={`Are you sure you want to delete (${currentStock.name}) stock?`}
+              loading={deleteStockLoading}
+            />
+          </>
+        )}
         <CustomModal
           open={addItemModalOpen}
           handleClose={handleAddItemModalClose}

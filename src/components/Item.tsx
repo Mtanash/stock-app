@@ -1,27 +1,33 @@
+import AddIcon from "@mui/icons-material/Add";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Button,
   Typography,
 } from "@mui/material";
-import { Item as IItem } from "../types";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Button } from "@mui/material";
+import { blueGrey } from "@mui/material/colors";
 import { Box } from "@mui/system";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import CustomModal from "./CustomModal";
 import { useDeleteItemMutation } from "../features/api/itemApiSlice";
-import AddItemDateForm from "./AddItemDateForm";
-import EditItemForm from "./EditItemForm";
-import DateRow from "./DateRow";
-import useCustomModal from "../hooks/useCustomModal";
 import useAlertDialog from "../hooks/useAlertDialog";
+import useCustomModal from "../hooks/useCustomModal";
+import { Item as IItem } from "../types";
+import AddItemDateForm from "./AddItemDateForm";
 import AlertDialog from "./AlertDialog";
+import CustomModal from "./CustomModal";
+import DateRow from "./DateRow";
+import EditItemForm from "./EditItemForm";
 
 const Item = ({ item }: { item: IItem }) => {
-  const { _id: itemId, name, dates } = item;
+  const {
+    _id: itemId,
+    name,
+    dates,
+    stock: { name: stockName },
+  } = item;
 
   const {
     customModalOpen: addItemDateModalOpen,
@@ -62,7 +68,12 @@ const Item = ({ item }: { item: IItem }) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography variant="h5">{name}</Typography>
+          <Box>
+            <Typography variant="h5">{name}</Typography>
+            <Typography variant="subtitle2" color={blueGrey[300]}>
+              {stockName}
+            </Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <Box sx={{ display: "flex", gap: ".25rem" }}>
