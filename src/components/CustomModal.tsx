@@ -1,17 +1,24 @@
 import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
 import { style } from "./CustomModal.style";
+
+type CustomModalProps = {
+  open: boolean;
+  handleClose: () => void;
+  Component: ReactNode;
+  title: string;
+};
 
 const CustomModal = ({
   open,
   handleClose,
   Component,
-}: {
-  open: boolean;
-  handleClose: () => void;
-  Component: ReactNode;
-}) => {
+  title,
+}: CustomModalProps) => {
   return (
     <Modal
       open={open}
@@ -19,7 +26,15 @@ const CustomModal = ({
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>{Component}</Box>
+      <Fade in={open}>
+        <Box sx={style}>
+          <Typography className="title" variant="h5">
+            {title}
+          </Typography>
+          <Divider />
+          {Component}
+        </Box>
+      </Fade>
     </Modal>
   );
 };

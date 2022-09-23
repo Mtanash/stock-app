@@ -23,6 +23,7 @@ const AddStockForm = ({ handleClose }: { handleClose: () => void }) => {
         flexDirection: "column",
         alignItems: "center",
         gap: "1rem",
+        margin: "1.5rem",
       }}
     >
       <TextField

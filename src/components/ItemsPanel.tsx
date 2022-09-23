@@ -92,6 +92,7 @@ const ItemsPanel = () => {
               handleClose={handleAddItemModalClose}
             />
           }
+          title="Add new item"
         />
         <Divider />
         <ItemList />

@@ -17,6 +17,9 @@ const StocksPanel = () => {
         elevation={3}
         sx={{
           padding: "1rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
         <Button
@@ -32,6 +35,7 @@ const StocksPanel = () => {
           open={open}
           handleClose={handleClose}
           Component={<AddStockForm handleClose={handleClose} />}
+          title="Add new stock"
         />
       </Paper>
     </Grid>

@@ -112,6 +112,7 @@ const Item = ({ item }: { item: IItem }) => {
                 handleClose={handleAddItemDateModalClose}
               />
             }
+            title="Add new date"
           />
           <CustomModal
             open={editItemModalOpen}
@@ -122,6 +123,7 @@ const Item = ({ item }: { item: IItem }) => {
                 handleClose={handleEditItemModalClose}
               />
             }
+            title="Edit item name"
           />
           <AlertDialog
             open={alertDialogOpen}
@@ -130,7 +132,7 @@ const Item = ({ item }: { item: IItem }) => {
             action={handleDeleteItemClick}
             loading={deleteItemLoading}
             title="Delete Alert"
-            content="Are you sure you want to delete this item?"
+            content={`Are you sure you want to delete (${name}) item?`}
           />
           {dates.map((date) => (
             <DateRow key={date._id} date={date} itemId={itemId as string} />

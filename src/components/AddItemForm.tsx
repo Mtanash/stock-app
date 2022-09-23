@@ -53,6 +53,7 @@ const AddItemForm = ({
         flexDirection: "column",
         alignItems: "center",
         gap: "1rem",
+        margin: "1.5rem",
       }}
     >
       <Typography variant="h4" textAlign="center" gutterBottom>
@@ -79,7 +80,6 @@ const AddItemForm = ({
         onClick={handleAddItem}
       >
         {addItemLoading ? <CircularProgress /> : "Add item"}
-        Add item
       </Button>
     </Box>
   );

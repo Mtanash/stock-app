@@ -74,7 +74,7 @@ const DateRow = ({ date, itemId }: { date: Date; itemId: string }) => {
           handleOpen={handleAlertDialogOpen}
           action={handleDeleteDateClick}
           title="Delete Alert"
-          content="Are you sure you want to delete this date?"
+          content={`Are you sure you want to delete (${month}/${year}) date?`}
           loading={deleteItemDateLoading}
         />
         <CustomModal
@@ -87,6 +87,7 @@ const DateRow = ({ date, itemId }: { date: Date; itemId: string }) => {
               handleClose={handleCustomModalClose}
             />
           }
+          title="Edit item date quantity"
         />
       </div>
     </Box>

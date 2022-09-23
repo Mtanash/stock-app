@@ -6,7 +6,12 @@ export const style = {
   maxWidth: 600,
   width: "70%",
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  borderRadius: "1rem",
   boxShadow: 24,
   p: 4,
+  padding: "0",
+
+  "& > .title": {
+    margin: "1rem",
+  },
 };

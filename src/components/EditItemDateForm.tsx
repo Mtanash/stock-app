@@ -33,6 +33,7 @@ const EditItemDateForm = ({
         flexDirection: "column",
         alignItems: "center",
         gap: "1rem",
+        margin: "1.5rem",
       }}
     >
       <TextField
