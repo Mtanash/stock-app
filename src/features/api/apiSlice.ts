@@ -3,8 +3,7 @@ import { RootState } from "./../../app/store";
 
 export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
-    // baseUrl: "https://mtanash-stock-api.herokuapp.com",
-    baseUrl: "http://localhost:5000",
+    baseUrl: "https://mtanash-stock-api.herokuapp.com",
     credentials: "include",
     prepareHeaders(headers, { getState }) {
       const accessToken = (getState() as RootState).user.accessToken;
