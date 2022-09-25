@@ -62,7 +62,7 @@ const Header = () => {
           <IconButton
             size="large"
             aria-label="account of current user"
-            aria-controls="menu-appbar"
+            aria-controls="menu-appBar"
             aria-haspopup="true"
             onClick={handleMenu}
             color="inherit"
