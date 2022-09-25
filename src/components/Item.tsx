@@ -12,9 +12,10 @@ import {
 import { blueGrey } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { useDeleteItemMutation } from "../features/api/itemApiSlice";
+import { errorHandler } from "../helpers/errorHandler";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
-import { Item as IItem } from "../types";
+import { Item as IItem, RTKQError } from "../interfaces";
 import AddItemDateForm from "./AddItemDateForm";
 import AlertDialog from "./AlertDialog";
 import CustomModal from "./CustomModal";
@@ -53,7 +54,11 @@ const Item = ({ item }: { item: IItem }) => {
 
   const handleDeleteItemClick = async () => {
     if (!itemId) return;
-    await deleteItem(itemId).unwrap();
+    try {
+      await deleteItem(itemId).unwrap();
+    } catch (error) {
+      errorHandler(error as RTKQError);
+    }
   };
 
   const handleEditItemClick = () => {

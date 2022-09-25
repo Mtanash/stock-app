@@ -1,7 +1,7 @@
 import Chip from "@mui/material/Chip";
 import { useAppDispatch } from "../app/hooks";
 import { selectStock } from "../features/stock/stockSlice";
-import { Stock as IStock } from "../types";
+import { Stock as IStock } from "../interfaces";
 
 const Stock = ({ stock }: { stock: IStock }) => {
   const { name } = stock;

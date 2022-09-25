@@ -1,7 +1,7 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { Stock } from "../../types";
+import { Stock } from "../../interfaces";
 
 const initialState: { selectedStock?: Stock } = {
   selectedStock: undefined,

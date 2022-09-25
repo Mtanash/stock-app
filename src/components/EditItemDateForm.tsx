@@ -3,6 +3,8 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useUpdateItemDateQuantityMutation } from "../features/api/itemApiSlice";
+import { errorHandler } from "../helpers/errorHandler";
+import { RTKQError } from "../interfaces";
 
 const EditItemDateForm = ({
   itemId,
@@ -21,7 +23,11 @@ const EditItemDateForm = ({
   const handleSaveButtonClick = async () => {
     if (!quantity) return;
 
-    await updateItemDate({ itemId, dateId, quantity });
+    try {
+      await updateItemDate({ itemId, dateId, quantity });
+    } catch (error) {
+      errorHandler(error as RTKQError);
+    }
 
     handleClose();
   };

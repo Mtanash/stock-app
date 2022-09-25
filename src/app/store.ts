@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "../features/api/apiSlice";
 import stockReducer from "../features/stock/stockSlice";
+import userReducer from "../features/user/userSlice";
 
 export const store = configureStore({
   reducer: {
     stock: stockReducer,
+    user: userReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

@@ -1,7 +1,8 @@
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useAddNewDateMutation } from "../features/api/itemApiSlice";
-import { Date } from "../types";
+import { errorHandler } from "../helpers/errorHandler";
+import { Date, RTKQError } from "../interfaces";
 import ItemDateInput from "./ItemDateInput";
 
 const AddItemDateForm = ({
@@ -31,8 +32,11 @@ const AddItemDateForm = ({
       },
       quantity,
     };
-    await addNewDate({ date: newDate, itemId }).unwrap();
-
+    try {
+      await addNewDate({ date: newDate, itemId }).unwrap();
+    } catch (error) {
+      errorHandler(error as RTKQError);
+    }
     handleClose();
   };
 

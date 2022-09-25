@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useAddNewItemMutation } from "../features/api/itemApiSlice";
+import { errorHandler } from "../helpers/errorHandler";
+import { RTKQError } from "../interfaces";
 import ItemDateInput from "./ItemDateInput";
 
 const AddItemForm = ({
@@ -40,9 +42,12 @@ const AddItemForm = ({
       },
     };
 
-    // add items
-    await addItem(item).unwrap();
-
+    try {
+      // add items
+      await addItem(item).unwrap();
+    } catch (error) {
+      errorHandler(error as RTKQError);
+    }
     handleClose();
   };
 

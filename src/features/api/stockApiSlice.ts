@@ -1,4 +1,4 @@
-import { Stock } from "../../types";
+import { Stock } from "../../interfaces";
 import { apiSlice } from "./apiSlice";
 
 export const extendedApi = apiSlice.injectEndpoints({

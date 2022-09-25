@@ -1,4 +1,4 @@
-import { Item, Date } from "../../types";
+import { Date, Item } from "../../interfaces";
 import { apiSlice } from "./apiSlice";
 
 type ItemType = {
