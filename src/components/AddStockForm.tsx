@@ -1,18 +1,19 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useState } from "react";
 import { useAddNewStockMutation } from "../features/api/stockApiSlice";
-import { errorHandler } from "../helpers/errorHandler";
-import { RTKQError } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const AddStockForm = ({ handleClose }: { handleClose: () => void }) => {
   const [name, setName] = useState("");
   const [addStock, { isLoading: addStockLoading }] = useAddNewStockMutation();
 
+  const { handleError } = useErrorHandler();
+
   const handleAddStock = async () => {
     try {
       await addStock({ name }).unwrap();
     } catch (error) {
-      errorHandler(error as RTKQError);
+      handleError(error as any);
     } finally {
       handleClose();
     }

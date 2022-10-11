@@ -1,8 +1,7 @@
 import { Box, Button, CircularProgress, TextField } from "@mui/material";
 import { useState } from "react";
 import { useEditItemMutation } from "../features/api/itemApiSlice";
-import { errorHandler } from "../helpers/errorHandler";
-import { RTKQError } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
 
 const EditItemForm = ({
   itemId,
@@ -15,13 +14,15 @@ const EditItemForm = ({
 
   const [editName, { isLoading: editNameLoading }] = useEditItemMutation();
 
+  const { handleError } = useErrorHandler();
+
   const handleSaveButtonClick = async () => {
     if (!newName) return;
 
     try {
       await editName({ newName, itemId }).unwrap();
     } catch (error) {
-      errorHandler(error as RTKQError);
+      handleError(error as any);
     }
 
     handleClose();

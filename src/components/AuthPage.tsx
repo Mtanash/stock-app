@@ -10,8 +10,8 @@ import {
   useLoginUserMutation,
 } from "../features/api/userApiSlice";
 import { login } from "../features/user/userSlice";
-import { errorHandler } from "../helpers/errorHandler";
-import { RTKQError, User } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
+import { User } from "../interfaces";
 
 type FormData = {
   name: string | undefined;
@@ -34,6 +34,8 @@ const AuthPage = () => {
   const [createUser, { isLoading: createUserLoading }] =
     useCreateNewUserMutation();
 
+  const { handleError } = useErrorHandler();
+
   const toggleSignUp = () => setSignUp(!signUp);
 
   const handleFormDataChange = (
@@ -44,7 +46,7 @@ const AuthPage = () => {
 
   useEffect(() => {
     if (user) {
-      navigate(-1);
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -53,40 +55,38 @@ const AuthPage = () => {
 
     if (!formData.name || !formData.password) return;
 
-    try {
-      if (signUp) {
-        // create new user
-        await createUser({
-          name: formData.name,
-          password: formData.password,
+    if (signUp) {
+      // create new user
+      createUser({
+        name: formData.name,
+        password: formData.password,
+      })
+        .unwrap()
+        .then((res) => {
+          const user: { userData: User; accessToken: string } = {
+            userData: res.user,
+            accessToken: res.accessToken,
+          };
+          dispatch(login(user));
+          navigate("/");
         })
-          .unwrap()
-          .then((res) => {
-            const user: { userData: User; accessToken: string } = {
-              userData: res.user,
-              accessToken: res.accessToken,
-            };
-            dispatch(login(user));
-            navigate(-1);
-          });
-      } else {
-        // login user
-        await loginUser({
-          name: formData.name,
-          password: formData.password,
+        .catch((error) => handleError(error));
+    } else {
+      // login user
+      loginUser({
+        name: formData.name,
+        password: formData.password,
+      })
+        .unwrap()
+        .then((res) => {
+          const user: { userData: User; accessToken: string } = {
+            userData: res.user,
+            accessToken: res.accessToken,
+          };
+          dispatch(login(user));
+          navigate("/");
         })
-          .unwrap()
-          .then((res) => {
-            const user: { userData: User; accessToken: string } = {
-              userData: res.user,
-              accessToken: res.accessToken,
-            };
-            dispatch(login(user));
-            navigate(-1);
-          });
-      }
-    } catch (error) {
-      errorHandler(error as RTKQError);
+        .catch((error) => handleError(error));
     }
   };
 

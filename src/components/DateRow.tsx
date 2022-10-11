@@ -3,10 +3,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { useDeleteItemDateMutation } from "../features/api/itemApiSlice";
-import { errorHandler } from "../helpers/errorHandler";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
-import { Date, RTKQError } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
+import { Date } from "../interfaces";
 import AlertDialog from "./AlertDialog";
 import CustomModal from "./CustomModal";
 import EditItemDateForm from "./EditItemDateForm";
@@ -27,13 +27,15 @@ const DateRow = ({ date, itemId }: { date: Date; itemId: string }) => {
   const [deleteItemDate, { isLoading: deleteItemDateLoading }] =
     useDeleteItemDateMutation();
 
+  const { handleError } = useErrorHandler();
+
   const handleDeleteDateClick = async () => {
     if (!dateId) return;
 
     try {
       await deleteItemDate({ itemId, dateId }).unwrap();
     } catch (error) {
-      errorHandler(error as RTKQError);
+      handleError(error as any);
     }
 
     handleAlertDialogClose();

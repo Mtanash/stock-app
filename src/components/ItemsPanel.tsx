@@ -6,10 +6,9 @@ import {
   selectCurrentStock,
   unselectStock,
 } from "../features/stock/stockSlice";
-import { errorHandler } from "../helpers/errorHandler";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
-import { RTKQError } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
 import AddItemForm from "./AddItemForm";
 import AlertDialog from "./AlertDialog";
 import CustomModal from "./CustomModal";
@@ -18,6 +17,8 @@ import ItemList from "./ItemList";
 const ItemsPanel = () => {
   const dispatch = useAppDispatch();
   const currentStock = useAppSelector(selectCurrentStock);
+
+  const { handleError } = useErrorHandler();
 
   const {
     customModalOpen: addItemModalOpen,
@@ -41,13 +42,18 @@ const ItemsPanel = () => {
 
   const handleDeleteStock = async () => {
     if (!currentStock) return;
-    try {
-      await deleteStock(currentStock._id);
-    } catch (error) {
-      errorHandler(error as RTKQError);
-    }
-    dispatch(unselectStock());
-    handleAlertDialogClose();
+    deleteStock(currentStock._id)
+      .unwrap()
+      .then(() => {
+        dispatch(unselectStock());
+      })
+      .catch((error) => {
+        console.log(error);
+        handleError(error as any);
+      })
+      .finally(() => {
+        handleAlertDialogClose();
+      });
   };
 
   return (

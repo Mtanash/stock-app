@@ -12,10 +12,10 @@ import {
 import { blueGrey } from "@mui/material/colors";
 import { Box } from "@mui/system";
 import { useDeleteItemMutation } from "../features/api/itemApiSlice";
-import { errorHandler } from "../helpers/errorHandler";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
-import { Item as IItem, RTKQError } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
+import { Item as IItem } from "../interfaces";
 import AddItemDateForm from "./AddItemDateForm";
 import AlertDialog from "./AlertDialog";
 import CustomModal from "./CustomModal";
@@ -29,6 +29,8 @@ const Item = ({ item }: { item: IItem }) => {
     dates,
     stock: { name: stockName },
   } = item;
+
+  const { handleError } = useErrorHandler();
 
   const {
     customModalOpen: addItemDateModalOpen,
@@ -57,7 +59,7 @@ const Item = ({ item }: { item: IItem }) => {
     try {
       await deleteItem(itemId).unwrap();
     } catch (error) {
-      errorHandler(error as RTKQError);
+      handleError(error as any);
     }
   };
 

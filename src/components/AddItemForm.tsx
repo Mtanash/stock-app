@@ -5,8 +5,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useAddNewItemMutation } from "../features/api/itemApiSlice";
-import { errorHandler } from "../helpers/errorHandler";
-import { RTKQError } from "../interfaces";
+import useErrorHandler from "../hooks/useErrorHandler";
 import ItemDateInput from "./ItemDateInput";
 
 const AddItemForm = ({
@@ -24,6 +23,8 @@ const AddItemForm = ({
   const onMonthChange = (value: number) => setMonth(value);
   const onYearChange = (value: number) => setYear(value);
   const onQuantityChange = (value: number) => setQuantity(value);
+
+  const { handleError } = useErrorHandler();
 
   const [addItem, { isLoading: addItemLoading }] = useAddNewItemMutation();
 
@@ -46,7 +47,7 @@ const AddItemForm = ({
       // add items
       await addItem(item).unwrap();
     } catch (error) {
-      errorHandler(error as RTKQError);
+      handleError(error as any);
     }
     handleClose();
   };
