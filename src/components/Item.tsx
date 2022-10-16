@@ -13,6 +13,7 @@ import { Box } from "@mui/system";
 import { useAppSelector } from "../app/hooks";
 import { useDeleteItemMutation } from "../features/api/itemApiSlice";
 import { selectCurrentStock } from "../features/stock/stockSlice";
+import { selectCurrentUser } from "../features/user/userSlice";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
 import useErrorHandler from "../hooks/useErrorHandler";
@@ -26,6 +27,7 @@ import EditItemForm from "./EditItemForm";
 const Item = ({ item }: { item: IItem }) => {
   const { _id: itemId, name, dates } = item;
 
+  const currentUser = useAppSelector(selectCurrentUser);
   const currentStock = useAppSelector(selectCurrentStock);
 
   const { handleError } = useErrorHandler();
@@ -81,31 +83,35 @@ const Item = ({ item }: { item: IItem }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Box sx={{ display: "flex", gap: ".25rem" }}>
-            <Button
-              variant="contained"
-              sx={{ margin: "0.5rem 0" }}
-              onClick={handleAddNewDateClick}
-              endIcon={<AddIcon />}
-            >
-              Add new date
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              sx={{ margin: "0.5rem 0" }}
-              endIcon={<DeleteIcon />}
-              onClick={handleAlertDialogOpen}
-            >
-              Delete {name}
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ margin: "0.5rem 0" }}
-              endIcon={<EditIcon />}
-              onClick={handleEditItemClick}
-            >
-              Edit {name}
-            </Button>
+            {currentUser?.userData && (
+              <>
+                <Button
+                  variant="contained"
+                  sx={{ margin: "0.5rem 0" }}
+                  onClick={handleAddNewDateClick}
+                  endIcon={<AddIcon />}
+                >
+                  Add new date
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  sx={{ margin: "0.5rem 0" }}
+                  endIcon={<DeleteIcon />}
+                  onClick={handleAlertDialogOpen}
+                >
+                  Delete {name}
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{ margin: "0.5rem 0" }}
+                  endIcon={<EditIcon />}
+                  onClick={handleEditItemClick}
+                >
+                  Edit {name}
+                </Button>
+              </>
+            )}
           </Box>
           <CustomModal
             open={addItemDateModalOpen}

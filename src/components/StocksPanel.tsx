@@ -2,12 +2,17 @@ import { Paper } from "@mui/material";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import { useCallback, useState } from "react";
+import { useAppSelector } from "../app/hooks";
+import { selectCurrentUser } from "../features/user/userSlice";
 import AddStockForm from "./AddStockForm";
 import CustomModal from "./CustomModal";
 import StockList from "./StockList";
 
 const StocksPanel = () => {
+  const currentUser = useAppSelector(selectCurrentUser);
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = useCallback(() => setOpen(false), []);
@@ -22,13 +27,19 @@ const StocksPanel = () => {
           alignItems: "center",
         }}
       >
-        <Button
-          sx={{ margin: "1rem 0" }}
-          variant="contained"
-          onClick={handleOpen}
-        >
-          Add new stock
-        </Button>
+        <Typography gutterBottom variant="h5">
+          Stocks
+        </Typography>
+        {currentUser?.userData?.role === "admin" && (
+          <Button
+            sx={{ margin: "1rem 0" }}
+            variant="contained"
+            onClick={handleOpen}
+          >
+            Add new stock
+          </Button>
+        )}
+
         <Divider />
         <StockList />
         <CustomModal

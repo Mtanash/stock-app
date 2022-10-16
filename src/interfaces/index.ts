@@ -28,6 +28,7 @@ export interface Date {
 export interface User {
   _id?: string;
   name: string;
+  role: "admin" | "user";
 }
 
 export interface RTKQError {

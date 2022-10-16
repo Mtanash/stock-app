@@ -6,6 +6,7 @@ import {
   selectCurrentStock,
   unselectStock,
 } from "../features/stock/stockSlice";
+import { selectCurrentUser } from "../features/user/userSlice";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
 import useErrorHandler from "../hooks/useErrorHandler";
@@ -15,8 +16,8 @@ import CustomModal from "./CustomModal";
 import ItemList from "./ItemList";
 
 const ItemsPanel = () => {
-  console.log("rerender");
   const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
   const currentStock = useAppSelector(selectCurrentStock);
 
   const { handleError } = useErrorHandler();
@@ -68,7 +69,7 @@ const ItemsPanel = () => {
         <Typography variant="h4">
           {currentStock ? currentStock.name : "Please select a stock"}
         </Typography>
-        {currentStock && (
+        {currentStock && currentUser?.userData && (
           <>
             <Button
               variant="contained"
@@ -77,14 +78,19 @@ const ItemsPanel = () => {
             >
               Add new item
             </Button>
-            <Button
-              variant="contained"
-              color="error"
-              sx={{ margin: ".5rem" }}
-              onClick={handleDeleteItemClick}
-            >
-              Delete {currentStock.name}
-            </Button>
+
+            {/* delete stock button */}
+            {currentUser?.userData?.role === "admin" && (
+              <Button
+                variant="contained"
+                color="error"
+                sx={{ margin: ".5rem" }}
+                onClick={handleDeleteItemClick}
+              >
+                Delete {currentStock.name}
+              </Button>
+            )}
+
             <AlertDialog
               open={alertDialogOpen}
               handleClose={handleAlertDialogClose}

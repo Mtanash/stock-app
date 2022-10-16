@@ -2,7 +2,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import { useAppSelector } from "../app/hooks";
 import { useDeleteItemDateMutation } from "../features/api/itemApiSlice";
+import { selectCurrentUser } from "../features/user/userSlice";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
 import useErrorHandler from "../hooks/useErrorHandler";
@@ -17,6 +19,8 @@ const DateRow = ({ date, itemId }: { date: Date; itemId: string }) => {
     quantity,
     _id: dateId,
   } = date;
+
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const { alertDialogOpen, handleAlertDialogClose, handleAlertDialogOpen } =
     useAlertDialog();
@@ -65,16 +69,21 @@ const DateRow = ({ date, itemId }: { date: Date; itemId: string }) => {
         <Typography variant="body1">{quantity}</Typography>
       </div>
       <div>
-        <Tooltip title="Edit quantity">
-          <IconButton onClick={handleCustomModalOpen}>
-            <EditIcon color="primary" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete date">
-          <IconButton onClick={handleAlertDialogOpen}>
-            <DeleteIcon sx={{ color: "red" }} />
-          </IconButton>
-        </Tooltip>
+        {currentUser?.userData && (
+          <>
+            <Tooltip title="Edit quantity">
+              <IconButton onClick={handleCustomModalOpen}>
+                <EditIcon color="primary" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Delete date">
+              <IconButton onClick={handleAlertDialogOpen}>
+                <DeleteIcon sx={{ color: "red" }} />
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
+
         <AlertDialog
           open={alertDialogOpen}
           handleClose={handleAlertDialogClose}
