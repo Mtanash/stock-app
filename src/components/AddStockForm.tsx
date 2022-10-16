@@ -9,7 +9,10 @@ const AddStockForm = ({ handleClose }: { handleClose: () => void }) => {
 
   const { handleError } = useErrorHandler();
 
-  const handleAddStock = async () => {
+  const handleAddStockFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
     try {
       await addStock({ name }).unwrap();
     } catch (error) {
@@ -29,19 +32,17 @@ const AddStockForm = ({ handleClose }: { handleClose: () => void }) => {
         margin: "1.5rem",
       }}
     >
-      <TextField
-        variant="outlined"
-        label="Stock name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Button
-        variant="contained"
-        disabled={addStockLoading}
-        onClick={handleAddStock}
-      >
-        {addStockLoading ? <CircularProgress /> : "Add Stock"}
-      </Button>
+      <form onSubmit={handleAddStockFormSubmit}>
+        <TextField
+          variant="outlined"
+          label="Stock name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Button variant="contained" disabled={addStockLoading} type="submit">
+          {addStockLoading ? <CircularProgress /> : "Add Stock"}
+        </Button>
+      </form>
     </Box>
   );
 };

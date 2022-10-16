@@ -1,4 +1,5 @@
 import { Stock } from "../../interfaces";
+import { Item } from "./../../interfaces/index";
 import { apiSlice } from "./apiSlice";
 
 export const extendedApi = apiSlice.injectEndpoints({
@@ -25,6 +26,13 @@ export const extendedApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["stocks", "items"],
     }),
+    getStockItems: builder.query({
+      query: (stockId) => `/stocks/${stockId}/items`,
+      transformResponse: (rawResult: { data: Item[] }) => {
+        return rawResult.data;
+      },
+      providesTags: ["items"],
+    }),
   }),
 });
 
@@ -32,4 +40,5 @@ export const {
   useAddNewStockMutation,
   useGetAllStocksQuery,
   useDeleteStockMutation,
+  useGetStockItemsQuery,
 } = extendedApi;

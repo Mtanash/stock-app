@@ -15,6 +15,7 @@ import CustomModal from "./CustomModal";
 import ItemList from "./ItemList";
 
 const ItemsPanel = () => {
+  console.log("rerender");
   const dispatch = useAppDispatch();
   const currentStock = useAppSelector(selectCurrentStock);
 
@@ -86,7 +87,6 @@ const ItemsPanel = () => {
             </Button>
             <AlertDialog
               open={alertDialogOpen}
-              handleOpen={handleAlertDialogOpen}
               handleClose={handleAlertDialogClose}
               action={handleDeleteStock}
               title="Delete Alert"
@@ -107,6 +107,7 @@ const ItemsPanel = () => {
           title="Add new item"
         />
         <Divider />
+
         <ItemList />
       </Paper>
     </Grid>

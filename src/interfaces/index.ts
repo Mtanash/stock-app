@@ -1,9 +1,5 @@
 export interface Item {
   _id?: string;
-  stock: {
-    _id: string;
-    name: string;
-  };
   name: string;
   dates: {
     _id?: string;

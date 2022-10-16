@@ -21,7 +21,11 @@ const EditItemDateForm = ({
 
   const { handleError } = useErrorHandler();
 
-  const handleSaveButtonClick = async () => {
+  const handleEditItemDateFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
     if (!quantity) return;
 
     try {
@@ -34,25 +38,28 @@ const EditItemDateForm = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1rem",
-        margin: "1.5rem",
-      }}
-    >
-      <TextField
-        label="New Quantity"
-        variant="outlined"
-        type="number"
-        value={quantity}
-        onChange={(e) => setQuantity(+e.target.value)}
-      />
-      <Button variant="contained" onClick={handleSaveButtonClick}>
-        {updateItemDateLoading ? <CircularProgress /> : "Save"}
-      </Button>
+    <Box>
+      <form
+        onSubmit={handleEditItemDateFormSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+          margin: "1.5rem",
+        }}
+      >
+        <TextField
+          label="New Quantity"
+          variant="outlined"
+          type="number"
+          value={quantity}
+          onChange={(e) => setQuantity(+e.target.value)}
+        />
+        <Button variant="contained" type="submit">
+          {updateItemDateLoading ? <CircularProgress /> : "Save"}
+        </Button>
+      </form>
     </Box>
   );
 };

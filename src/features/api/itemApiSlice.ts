@@ -1,4 +1,4 @@
-import { Date, Item } from "../../interfaces";
+import { Date } from "../../interfaces";
 import { apiSlice } from "./apiSlice";
 
 type ItemType = {
@@ -10,16 +10,9 @@ type ItemType = {
 
 export const extendedApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllItems: builder.query<Item[], string | undefined>({
-      query: (stockId) => `/items?stock=${stockId}`,
-      transformResponse: (rawResult: { data: Item[] }) => {
-        return rawResult.data;
-      },
-      providesTags: ["items"],
-    }),
-    deleteItem: builder.mutation<void, string>({
-      query: (itemId) => ({
-        url: `items/${itemId}`,
+    deleteItem: builder.mutation<void, { stockId: string; itemId: string }>({
+      query: ({ stockId, itemId }) => ({
+        url: `items/${stockId}/${itemId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["items", "stocks"],
@@ -50,7 +43,7 @@ export const extendedApi = apiSlice.injectEndpoints({
     }),
     deleteItemDate: builder.mutation<void, { itemId: string; dateId: string }>({
       query: ({ itemId, dateId }) => ({
-        url: `items/${itemId}/${dateId}`,
+        url: `items/${itemId}/date/${dateId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["items", "stocks"],
@@ -70,7 +63,6 @@ export const extendedApi = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetAllItemsQuery,
   useAddNewDateMutation,
   useDeleteItemMutation,
   useEditItemMutation,

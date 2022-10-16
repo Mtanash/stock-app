@@ -16,7 +16,11 @@ const EditItemForm = ({
 
   const { handleError } = useErrorHandler();
 
-  const handleSaveButtonClick = async () => {
+  const handleEditItemFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
     if (!newName) return;
 
     try {
@@ -29,24 +33,27 @@ const EditItemForm = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1rem",
-        margin: "1.5rem",
-      }}
-    >
-      <TextField
-        label="Name"
-        variant="outlined"
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
-      />
-      <Button variant="contained" onClick={handleSaveButtonClick}>
-        {editNameLoading ? <CircularProgress /> : "Save"}
-      </Button>
+    <Box>
+      <form
+        onSubmit={handleEditItemFormSubmit}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+          margin: "1.5rem",
+        }}
+      >
+        <TextField
+          label="Name"
+          variant="outlined"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <Button variant="contained" type="submit">
+          {editNameLoading ? <CircularProgress /> : "Save"}
+        </Button>
+      </form>
     </Box>
   );
 };

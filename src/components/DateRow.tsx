@@ -78,7 +78,6 @@ const DateRow = ({ date, itemId }: { date: Date; itemId: string }) => {
         <AlertDialog
           open={alertDialogOpen}
           handleClose={handleAlertDialogClose}
-          handleOpen={handleAlertDialogOpen}
           action={handleDeleteDateClick}
           title="Delete Alert"
           content={`Are you sure you want to delete (${month}/${year}) date?`}

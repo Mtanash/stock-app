@@ -9,9 +9,10 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
 import { Box } from "@mui/system";
+import { useAppSelector } from "../app/hooks";
 import { useDeleteItemMutation } from "../features/api/itemApiSlice";
+import { selectCurrentStock } from "../features/stock/stockSlice";
 import useAlertDialog from "../hooks/useAlertDialog";
 import useCustomModal from "../hooks/useCustomModal";
 import useErrorHandler from "../hooks/useErrorHandler";
@@ -23,12 +24,9 @@ import DateRow from "./DateRow";
 import EditItemForm from "./EditItemForm";
 
 const Item = ({ item }: { item: IItem }) => {
-  const {
-    _id: itemId,
-    name,
-    dates,
-    stock: { name: stockName },
-  } = item;
+  const { _id: itemId, name, dates } = item;
+
+  const currentStock = useAppSelector(selectCurrentStock);
 
   const { handleError } = useErrorHandler();
 
@@ -55,11 +53,13 @@ const Item = ({ item }: { item: IItem }) => {
   };
 
   const handleDeleteItemClick = async () => {
-    if (!itemId) return;
+    if (!itemId || !currentStock) return;
     try {
-      await deleteItem(itemId).unwrap();
+      await deleteItem({ stockId: currentStock?._id, itemId }).unwrap();
     } catch (error) {
       handleError(error as any);
+    } finally {
+      handleAlertDialogClose();
     }
   };
 
@@ -77,9 +77,6 @@ const Item = ({ item }: { item: IItem }) => {
         >
           <Box>
             <Typography variant="h5">{name}</Typography>
-            <Typography variant="subtitle2" color={blueGrey[300]}>
-              {stockName}
-            </Typography>
           </Box>
         </AccordionSummary>
         <AccordionDetails>
@@ -135,7 +132,6 @@ const Item = ({ item }: { item: IItem }) => {
           <AlertDialog
             open={alertDialogOpen}
             handleClose={handleAlertDialogClose}
-            handleOpen={handleAlertDialogOpen}
             action={handleDeleteItemClick}
             loading={deleteItemLoading}
             title="Delete Alert"

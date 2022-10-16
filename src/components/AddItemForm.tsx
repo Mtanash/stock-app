@@ -28,8 +28,11 @@ const AddItemForm = ({
 
   const [addItem, { isLoading: addItemLoading }] = useAddNewItemMutation();
 
-  const handleAddItem = async () => {
+  const handleAddItemFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     // validate inputs
+    e.preventDefault();
 
     if (!name || !month || !year || !quantity) return;
 
@@ -53,40 +56,39 @@ const AddItemForm = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1rem",
-        margin: "1.5rem",
-      }}
-    >
-      <Typography variant="h4" textAlign="center" gutterBottom>
-        Add new item to stock
-      </Typography>
-      <TextField
-        label="Name"
-        variant="outlined"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <ItemDateInput
-        month={month}
-        year={year}
-        quantity={quantity}
-        onMonthChange={onMonthChange}
-        onYearChange={onYearChange}
-        onQuantityChange={onQuantityChange}
-      />
-
-      <Button
-        className="addItemButton"
-        variant="contained"
-        onClick={handleAddItem}
+    <Box>
+      <form
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+          margin: "1.5rem",
+        }}
+        onSubmit={handleAddItemFormSubmit}
       >
-        {addItemLoading ? <CircularProgress /> : "Add item"}
-      </Button>
+        <Typography variant="h4" textAlign="center" gutterBottom>
+          Add new item to stock
+        </Typography>
+        <TextField
+          label="Name"
+          variant="outlined"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <ItemDateInput
+          month={month}
+          year={year}
+          quantity={quantity}
+          onMonthChange={onMonthChange}
+          onYearChange={onYearChange}
+          onQuantityChange={onQuantityChange}
+        />
+
+        <Button className="addItemButton" variant="contained" type="submit">
+          {addItemLoading ? <CircularProgress /> : "Add item"}
+        </Button>
+      </form>
     </Box>
   );
 };

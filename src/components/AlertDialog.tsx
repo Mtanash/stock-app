@@ -12,7 +12,6 @@ type AlertDialogProps = {
   content: string;
   action: () => void;
   open: boolean;
-  handleOpen: () => void;
   handleClose: () => void;
   loading?: boolean;
 };
@@ -23,7 +22,6 @@ const AlertDialog = ({
   action,
   open,
   handleClose,
-  handleOpen,
   loading,
 }: AlertDialogProps) => {
   return (

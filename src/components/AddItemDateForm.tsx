@@ -25,7 +25,11 @@ const AddItemDateForm = ({
   const [addNewDate, { isLoading: addNewDateLoading }] =
     useAddNewDateMutation();
 
-  const handleAddDateClick = async () => {
+  const handleAddDateFormSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
     if (!month || !year || !quantity) return;
     const newDate: Date = {
       date: {
@@ -43,26 +47,29 @@ const AddItemDateForm = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "1rem",
-        margin: "1.5rem",
-      }}
-    >
-      <ItemDateInput
-        month={month}
-        year={year}
-        quantity={quantity}
-        onMonthChange={onMonthChange}
-        onYearChange={onYearChange}
-        onQuantityChange={onQuantityChange}
-      />
-      <Button variant="contained" onClick={handleAddDateClick}>
-        {addNewDateLoading ? <CircularProgress /> : "Add date"}
-      </Button>
+    <Box>
+      <form
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "1rem",
+          margin: "1.5rem",
+        }}
+        onSubmit={handleAddDateFormSubmit}
+      >
+        <ItemDateInput
+          month={month}
+          year={year}
+          quantity={quantity}
+          onMonthChange={onMonthChange}
+          onYearChange={onYearChange}
+          onQuantityChange={onQuantityChange}
+        />
+        <Button variant="contained" type="submit">
+          {addNewDateLoading ? <CircularProgress /> : "Add date"}
+        </Button>
+      </form>
     </Box>
   );
 };
